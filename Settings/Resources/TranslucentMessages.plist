@@ -34,6 +34,7 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 		</dict>
+
 		<dict>
 			<key>cell</key>
 			<string>PSSwitchCell</string>
@@ -50,6 +51,35 @@
 			<key>PostNotification</key>
 			<string>applebetas.ios.tweaks.translucentmessages.changed</string>
 		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>cellClass</key>
+			<string>PSSwitchTableCell</string>
+			<key>label</key>
+			<string>Use Image</string>
+			<key>key</key>
+			<string>UseImage</string>
+			<key>defaults</key>
+			<string>applebetas.ios.tweaks.translucentmessages</string>
+			<key>default</key>
+			<false/>
+			<key>PostNotification</key>
+			<string>applebetas.ios.tweaks.translucentmessages.changed</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>action</key>
+			<string>choosePhoto</string>
+			<key>label</key>
+			<string>Choose Image</string>
+			<key>PostNotification</key>
+			<string>applebetas.ios.tweaks.translucentmessages.changed</string>
+		</dict>
+
 		<dict>
 			<key>label</key>
 			<string>Credits</string>

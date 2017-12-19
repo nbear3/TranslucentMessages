@@ -32,10 +32,11 @@
 
 #define HEADER_HEIGHT 150.0f
 
-@interface TranslucentMessagesSettingsController : PSListController
+@interface TranslucentMessagesSettingsController : PSListController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @end
 
 @implementation TranslucentMessagesSettingsController
+
 - (id)specifiers {
 	if (_specifiers == nil) {
 		_specifiers = [self loadSpecifiersFromPlistName:@"TranslucentMessages" target:self];
@@ -50,6 +51,7 @@
 		return [super tableView:tableView heightForHeaderInSection:section];
 	}
 }
+
 - (id)tableView:(id)tableView viewForHeaderInSection:(NSInteger)section {
 	if (section == 0) {
 		// add table header
@@ -84,12 +86,29 @@
         sublabel.clipsToBounds = YES;
         sublabel.textAlignment = NSTextAlignmentCenter;
         sublabel.textColor = [UIColor darkGrayColor];
-        [headerView addSubview:sublabel];
-        
+        [headerView addSubview:sublabel];       
 		return headerView;
 	} else {
 		return [super tableView:tableView viewForHeaderInSection:section];
 	}
+}
+
+ -(void)choosePhoto{
+    UIImagePickerController *pickerLibrary = [[UIImagePickerController alloc] init];
+    pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    pickerLibrary.delegate = self;
+    [self.navigationController presentViewController:pickerLibrary animated:YES completion:nil];
+ }
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    // NSLog(@"[TranslucentMessages] The dictionary with photos that we've just recieved: %@", info);
+    NSString *path = [NSString stringWithFormat:@"/var/mobile/Documents/translucent_messages_bg.png"];
+    UIImage *picture = info[UIImagePickerControllerOriginalImage];
+    NSData *imageData = UIImagePNGRepresentation(picture);
+    [imageData writeToFile:path atomically:YES];
+    [self dismissViewControllerAnimated: YES completion: nil];
+
+    system("killall MobileSMS");
 }
 
 - (void)openDonate {

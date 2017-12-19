@@ -32,7 +32,9 @@
 
 static BOOL isEnabled = YES;
 static BOOL shouldBlur = YES;
+static BOOL useImage = NO;
 static BOOL hasPromptedAboutReduceTransparency = NO;
+
 CFStringRef kPrefsAppID = CFSTR("applebetas.ios.tweaks.translucentmessages");
 
 static void loadSettings() {
@@ -48,6 +50,9 @@ static void loadSettings() {
     }
     if (settings && settings[@"BlurWallpaper"]) {
         shouldBlur = [settings[@"BlurWallpaper"] boolValue];
+    }
+    if (settings && settings[@"UseImage"]) {
+        useImage = [settings[@"UseImage"] boolValue];
     }
     if (settings && settings[@"ReduceTransparencyPrompted"]) {
         hasPromptedAboutReduceTransparency = [settings[@"ReduceTransparencyPrompted"] boolValue];
@@ -72,8 +77,14 @@ static void settingsChanged(CFNotificationCenterRef center,
     BOOL result = %orig;
     [application _setBackgroundStyle:UIBackgroundStyleDefault];
     UIWindow *window = MSHookIvar<UIWindow *>(application, "_window");
-    [window setBackgroundColor:[UIColor clearColor]];
+    
+    [window setBackgroundColor: [UIColor clearColor]];
     [window setOpaque:NO];
+
+    if (useImage) {
+        window.layer.contents = (id)[UIImage imageNamed:@"/var/mobile/Documents/translucent_messages_bg.png"].CGImage;
+    }
+
     return result;
 }
 
